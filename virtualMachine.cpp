@@ -11,8 +11,8 @@ using namespace std;
 
 void Load(std::ofstream &);
 void Init();
-void StartExc();
-void ExeUserProgram();
+void StartExc(std::ofstream &fout);
+void ExeUserProgram(std::ofstream &fout);
 void MOS(int, std::ofstream &);
 void Read();
 void Write();
@@ -80,7 +80,7 @@ void Load(std::ofstream &fout)
 
         else if (controlCard == "$DTA")
         {
-            StartExc();
+            StartExc(fout);
             //fout << "$DTA" << std::endl;
         }
 
@@ -137,24 +137,81 @@ void Init()
     cout << "in init" << endl;
     regis.IR[4] = {'\0'};
     regis.M[2] = {0};
-    regis.IC[2] = {0};
+    regis.IC = 0;
     regis.R[4] = {'\0'};
     regis.C = 0;
     Memory[100] = {'\0'};
     regis.buffer[40] = {'\0'};
 }
 
-void StartExc()
+void StartExc(std::ofstream &fout)
 {
     cout << "in startexec" << endl;
-    regis.IC[2] = {0};
-    ExeUserProgram();
+    regis.IC = 0;
+    ExeUserProgram(fout);
 }
 
-void ExeUserProgram()
+void ExeUserProgram(std::ofstream &fout)
 {
+    int SI;
+    char cmd[4];
     cout << "in exeuserprog" << endl;
     //regis.IR = regis.IC;
+    while (true)
+    {
+        strcpy(cmd, Memory[regis.IC].c_str());
+        for (int i = 0; i < 4; i++)
+        {
+            regis.IR[i] = cmd[i];
+        }
+        regis.IC++;
+        string OPCODE = {regis.IR[0], regis.IR[1]};
+        string location = {regis.IR[2], regis.IR[3]};
+        int OP_ADDRESS;
+        if (OPCODE != "H ") //Hault does not have OP_ADDRESS
+            OP_ADDRESS = stoi(location);
+
+        if (OPCODE == "LR") //If OPCODE is Load Register
+        {
+            for (int i = 0; i < 4; i++)
+                regis.R[i] = Memory[OP_ADDRESS][i]; //Loading the word pointed by OP_ADDRESS to Register
+        }
+        else if (OPCODE == "SR")
+        {
+            for (int i = 0; i < 4; i++)
+                Memory[OP_ADDRESS][i] = regis.R[i]; //Storing the word from Register to the memory pointed by OP_ADDRESS
+        }
+        else if (OPCODE == "CR") //If OPCODE is Compare Register
+        {
+            string register_content = {regis.R[0], regis.R[1], regis.R[2], regis.R[3]};
+            string memory_content = {Memory[OP_ADDRESS][0], Memory[OP_ADDRESS][1], Memory[OP_ADDRESS][2], Memory[OP_ADDRESS][3]};
+            if (register_content == memory_content)
+                regis.C = true;
+            else
+                regis.C = false;
+        }
+        else if (OPCODE == "BT") //If OPCODE is Branch on True
+        {
+            if (regis.C == true)
+                regis.IC = OP_ADDRESS;
+        }
+        else if (OPCODE == "GD") //If OPCODE is Get Data
+        {
+            SI = 1;
+            MOS(SI,fout);
+        }
+        else if (OPCODE == "PD") //If OPCODE is Put Data
+        {
+            SI = 2;
+            MOS(SI,fout);
+        }
+        else if (OPCODE == "H ") //If OPCODE is Hault
+        {
+            SI = 3;
+            MOS(SI,fout);
+            break;
+        }
+    }
 }
 
 void MOS(int SI, std::ofstream &fout)
