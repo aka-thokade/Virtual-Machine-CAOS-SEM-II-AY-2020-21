@@ -6,9 +6,9 @@
 
 class Register {
 	public:
-		int IR[4], M[2], IC[2], R[4], C;
-		std::string buffer;
+		char IR[4], R[4];
+		int M[2], IC[2], C;
+		char buffer[40];
 		std::vector<std::string> instruction;
 		std::vector<std::string> ins_word;
-		std::vector<std::string> memory;
 };
