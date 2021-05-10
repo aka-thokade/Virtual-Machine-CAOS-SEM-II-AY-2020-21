@@ -9,7 +9,7 @@
 using namespace std;
 
 void Load(std::ofstream &);
-//void Init();
+void Init();
 //void StartEXc();
 //void ExeUserProgram();
 //void MOS();
@@ -29,7 +29,7 @@ int main()
     fin.open(filename);
     fout.open("output.txt",std::ios::out);
     if (fin.is_open() && fout.is_open()) {
-        cout << "FIle opened!" << endl;
+        cout << "File opened!" << endl;
     }
     else { 
         std::cerr << "File coundnt be opened" << std::endl; 
@@ -42,6 +42,8 @@ int main()
     }
 
     Load(fout);
+    
+    Init();
     
     visualMem();
 
@@ -93,18 +95,22 @@ void Load(std::ofstream &fout)
 }
 
 void visualMem(){
+
     for(int i = 0; i < regis.memory.size(); ++i){
-        cout << i << "\t" << regis.memory.at(i) << endl;
+        if(i < 10)
+            cout << "0" << i << "\t" << regis.memory.at(i) << endl;
+        else
+            cout << i << "\t" << regis.memory.at(i) << endl;
     }
 }
 
-/* void Init(){
-   regis.IR = 0;
-   regis.IC = 0;
-   regis.M = 0;
-   regis.R = 0;
+void Init(){
+   regis.IR[4] = {0};
+   regis.M[2] = {0};
+   regis.IC[2] = {0};
+   regis.R[4] = {0};
    regis.C = 0;
-} */
+}
 
 /* void StartExc(){
    ExeUserProgram();
