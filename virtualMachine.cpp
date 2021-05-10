@@ -42,10 +42,6 @@ int main()
     }
 
     Load(fout);
-    
-    Init();
-    
-    visualMem();
 
     fin.close();
     fout.close();
@@ -62,7 +58,8 @@ void Load(std::ofstream &fout)
         }
 
         if (st_end == "$AMJ") { 
-            //Init();
+            //visualMem();          //to visualize the memory 
+            Init();
             //fout << "$AMJ" << std::endl; 
         }
 
@@ -110,6 +107,7 @@ void Init(){
    regis.IC[2] = {0};
    regis.R[4] = {0};
    regis.C = 0;
+   regis.memory.clear();
 }
 
 /* void StartExc(){
