@@ -32,6 +32,7 @@ public:
     void showR();
     void showC();
     void clearBuffer();
+    void clearRegister();
 };
 
 void virtualMachine::Load()
@@ -167,14 +168,16 @@ void virtualMachine::ExecUserProgram()
         }
         else if(opCode == "AD") //If opCode is Add two numbers
         {
-            int num1 = (int)Memory[opAddress][3] + (((int)Memory[opAddress][2])*10) + (((int)Memory[opAddress][2])*100);
-            int num2 = (int)R[0] + ((int)R[1]*10) + ((int)R[2]*100);
+            string register_content = {R[0], R[1], R[2], R[3]};
+            string memory_content = {Memory[opAddress][0], Memory[opAddress][1], Memory[opAddress][2], Memory[opAddress][3]};
+            int num1 = stoi(memory_content);
+            int num2 = stoi(register_content);
             int sum = num1 + num2;
             
             int digit;
             char cDigit;
             int R_posCount = 3;
-            
+            clearRegister();
             //to store sum in R
             while (sum > 0)
             {
@@ -285,7 +288,7 @@ void virtualMachine::Terminate()
 void virtualMachine::visualMem(){
     // cout << "in visualMem" << endl;
 
-    for (int i = 0; i < 20; ++i)
+    for (int i = 0; i < 40; ++i)
     {
         if (i < 10)
             cout << "0" << i << "\t" << Memory[i][0] << Memory[i][1] << Memory[i][2] << Memory[i][3] << endl;
@@ -309,8 +312,14 @@ void virtualMachine::clearBuffer(){
     for (int i = 0; i < 40; ++i)
     {
         Buffer[i] = ' ';
+    }  
+}
+
+void virtualMachine::clearRegister(){
+    // cout << "in clearBuffer" << endl;
+    for (int i = 0; i < 4; ++i){
+        R[i] = ' ';
     }
-    
 }
 
 int main()
