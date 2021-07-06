@@ -37,6 +37,8 @@ public:
 
 void virtualMachine::Load()
 {
+    // cout << "in Load" << endl << endl;
+
     M = 0;
     while (!fin.eof())
     {
@@ -89,7 +91,7 @@ void virtualMachine::Load()
 
 void virtualMachine::Init()
 {
-    // cout << "in Init" << endl;
+    // cout << "in Init" << endl << endl;
 
     /* Memory[100][4] = {' '};
     IR[4] = {' '};
@@ -118,7 +120,7 @@ void virtualMachine::Init()
 
 void virtualMachine::StartExec()
 {
-    // cout << "in StartExec" << endl;
+    // cout << "in StartExec" << endl << endl;
 
     IC = 0;
     ExecUserProgram();
@@ -126,7 +128,7 @@ void virtualMachine::StartExec()
 
 void virtualMachine::ExecUserProgram()
 {
-    // cout << "in ExecUserProgram" << endl;
+    // cout << "in ExecUserProgram" << endl << endl;
 
     while (true)
     {
@@ -211,7 +213,7 @@ void virtualMachine::ExecUserProgram()
 
 void virtualMachine::MOS()
 {
-    // cout << "in MOS" << endl;
+    // cout << "in MOS" << endl << endl;
 
     switch (SI)
     {
@@ -238,7 +240,7 @@ void virtualMachine::MOS()
 
 void virtualMachine::Read()
 {
-    // cout << "in Read" << endl;
+    // cout << "in Read" << endl << endl;
 
     int k = 0;
     IR[3] = '0';
@@ -266,7 +268,7 @@ void virtualMachine::Read()
 
 void virtualMachine::Write()
 {
-    // cout << "in Write" << endl;
+    // cout << "in Write" << endl << endl;
 
     IR[3] = '0';
     string location = {IR[2], IR[3]};         //Combining IR[2],IR[3] to get opAddress
@@ -281,34 +283,34 @@ void virtualMachine::Write()
 
 void virtualMachine::Terminate()
 {
-    // cout << "in Terminate" << endl;
+    // cout << "in Terminate" << endl << endl;
     fout << "\n\n"; //Two blank lines in output file
 }
 
 void virtualMachine::visualMem(){
-    // cout << "in visualMem" << endl;
+    // cout << "in visualMem" << endl << endl;
 
-    for (int i = 0; i < 40; ++i)
+    /* for (int i = 0; i < 32; ++i)
     {
         if (i < 10)
             cout << "0" << i << "\t" << Memory[i][0] << Memory[i][1] << Memory[i][2] << Memory[i][3] << endl;
         else
             cout << i << "\t" << Memory[i][0] << Memory[i][1] << Memory[i][2] << Memory[i][3] << endl;
-    }
+    } */
 }
 
 void virtualMachine::showR(){
-    // cout << "in showR" << endl;
+    // cout << "in showR" << endl << endl;
     cout << "Contents of R: " << R[0] << R[1] << R[2] << R[3] << endl;
 }
 
 void virtualMachine::showC(){
-    // cout << "in showC" << endl;
+    // cout << "in showC" << endl << endl;
     cout << "Status of C: " << C << endl;
 }
 
 void virtualMachine::clearBuffer(){
-    // cout << "in clearBuffer" << endl;
+    // cout << "in clearBuffer" << endl << endl;
     for (int i = 0; i < 40; ++i)
     {
         Buffer[i] = ' ';
@@ -316,7 +318,7 @@ void virtualMachine::clearBuffer(){
 }
 
 void virtualMachine::clearRegister(){
-    // cout << "in clearBuffer" << endl;
+    // cout << "in clearBuffer" << endl << endl;
     for (int i = 0; i < 4; ++i){
         R[i] = ' ';
     }
